@@ -187,9 +187,8 @@ namespace GitTfs.VsCommon
 
         protected override TfsTeamProjectCollection GetTfsCredential(Uri uri)
         {
-            var vssCred = HasCredentials
-                ? new VssClientCredentials(new WindowsCredential(GetCredential()))
-                : VssClientCredentials.LoadCachedCredentials(uri, false, CredentialPromptType.PromptIfNeeded);
+            var token = System.Environment.GetEnvironmentVariable("GIT_TFS_PAT");
+            var vssCred = new VssBasicCredential(string.Empty, token);
 
             return new TfsTeamProjectCollection(uri, vssCred);
 #pragma warning restore 618
